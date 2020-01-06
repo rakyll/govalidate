@@ -8,6 +8,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -25,7 +26,16 @@ type checker interface {
 	resolution() string
 }
 
+var (
+	ignoreCGO     bool
+	ignoreEditors bool
+)
+
 func main() {
+	flag.BoolVar(&ignoreCGO, "ignore-cgo", false, "")
+	flag.BoolVar(&ignoreEditors, "ignore-editors", false, "")
+	flag.Parse()
+
 	var exit int
 	// TODO(jbd): Check operating system requirements.
 	// See https://github.com/golang/go/wiki/MinimumRequirements for
@@ -38,13 +48,13 @@ func main() {
 		exit += runCheck(false, c)
 	}
 	// Optional checks.
-	// TODO(jbd): Add -ignore-cgo and -ignore-editors
-	// flags to selectively check the optionals.
-	// TODO(jbd): Add Gogland.
-	optionals := []checker{
-		&cgoChecker{},    // checks if there is a C compiler available
-		&vimChecker{},    // If vim is installed, check if vim-go is installed.
-		&vscodeChecker{}, // if VSCode is installed, check if extension is available
+	var optionals []checker
+	if !ignoreCGO {
+		optionals = append(optionals, &cgoChecker{})
+	}
+	if !ignoreEditors {
+		// TODO(jbd): Add Gogland.
+		optionals = append(optionals, &vimChecker{}, &vscodeChecker{})
 	}
 	for _, c := range optionals {
 		exit += runCheck(true, c)
