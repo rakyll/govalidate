@@ -25,4 +25,3 @@ Download the binary and run:
 * Linux 64-bit: https://storage.googleapis.com/jbd-releases/govalidate_linux_amd64
 * macOS 64-bit: https://storage.googleapis.com/jbd-releases/govalidate_darwin_amd64
 * Windows 64-bit: https://storage.googleapis.com/jbd-releases/govalidate_windows_amd64
-
