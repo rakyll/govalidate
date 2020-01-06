@@ -57,5 +57,7 @@ Visit https://golang.org/dl/ to download Go.`, g.err)
 	}
 
 	return fmt.Sprintf(`Your current Go version (%v) is not supported.
-Visit https://golang.org/dl/ for a supported version.`, g.version)
+Supported versions are %v.
+Visit https://golang.org/dl/ for a supported version.`,
+		g.version, strings.Join(supportedGoVersions, ", "))
 }
