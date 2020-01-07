@@ -20,7 +20,11 @@ $ govalidate
 
 ## Installation
 
-Download the binary and run:
+```
+$ go get -u github.com/rakyll/govalidate
+```
+
+Or download one of the binaries and run:
 
 * Linux 64-bit: https://storage.googleapis.com/jbd-releases/govalidate_linux_amd64
 * macOS 64-bit: https://storage.googleapis.com/jbd-releases/govalidate_darwin_amd64
