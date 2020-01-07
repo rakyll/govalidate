@@ -7,23 +7,22 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/fatih/color"
+	"github.com/rakyll/govalidate/check"
 )
 
 type checker interface {
-	// check validates a condition and returns ok=true
+	// Check validates a condition and returns ok=true
 	// if condition is satisfied. Return skip=true
 	// if you don't want the results to be printed.
-	check() (ok bool, skip bool)
-	summary() string
-	resolution() string
+	Check() (ok bool, skip bool)
+	Summary() string
+	Resolution() string
 }
 
 var (
@@ -41,8 +40,8 @@ func main() {
 	// See https://github.com/golang/go/wiki/MinimumRequirements for
 	// a more comprehensive list.
 	checks := []checker{
-		&goChecker{},   // checks go and go version
-		&pathChecker{}, // checks $GOPATH/bin is in $PATH
+		&check.GoChecker{},   // checks go and go version
+		&check.PathChecker{}, // checks $GOPATH/bin is in $PATH
 	}
 	for _, c := range checks {
 		exit += runCheck(false, c)
@@ -50,11 +49,14 @@ func main() {
 	// Optional checks.
 	var optionals []checker
 	if !ignoreCGO {
-		optionals = append(optionals, &cgoChecker{})
+		optionals = append(optionals, &check.CGOChecker{})
 	}
 	if !ignoreEditors {
 		// TODO(jbd): Add Goland.
-		optionals = append(optionals, &vimChecker{}, &vscodeChecker{})
+		optionals = append(optionals,
+			&check.VimChecker{},
+			&check.VSCodeChecker{},
+		)
 	}
 	for _, c := range optionals {
 		exit += runCheck(true, c)
@@ -65,16 +67,10 @@ func main() {
 	}
 }
 
-func runCmd(cmd string, arg ...string) (string, error) {
-	c := exec.Command(cmd, arg...)
-	out, err := c.CombinedOutput()
-	return string(bytes.TrimSpace(out)), err
-}
-
 func runCheck(optional bool, c checker) int {
 	var exit int
 
-	ok, skip := c.check()
+	ok, skip := c.Check()
 	if skip {
 		return exit
 	}
@@ -89,9 +85,9 @@ func runCheck(optional bool, c checker) int {
 		}
 	}
 	fmt.Print(" ")
-	fmt.Println(c.summary())
+	fmt.Println(c.Summary())
 	if !ok {
-		printWithTabs(c.resolution())
+		printWithTabs(c.Resolution())
 	}
 	return exit
 }

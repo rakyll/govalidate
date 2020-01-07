@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package check
 
 import (
 	"fmt"
@@ -11,12 +11,12 @@ import (
 	"strings"
 )
 
-type pathChecker struct {
+type PathChecker struct {
 	err       error
 	gopathbin string
 }
 
-func (c *pathChecker) check() (bool, bool) {
+func (c *PathChecker) Check() (bool, bool) {
 	gopath, err := runCmd("go", "env", "GOPATH")
 	if err != nil {
 		c.err = err
@@ -33,11 +33,11 @@ func (c *pathChecker) check() (bool, bool) {
 	return false, false
 }
 
-func (c *pathChecker) summary() string {
+func (c *PathChecker) Summary() string {
 	return fmt.Sprintf("Checking if $PATH contains %q", c.gopathbin)
 }
 
-func (c *pathChecker) resolution() string {
+func (c *PathChecker) Resolution() string {
 	// TODO(jbd): Add windows specific instructions.
 	return fmt.Sprintf(`Add %q to your $PATH.
 On Unix systems:

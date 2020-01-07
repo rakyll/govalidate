@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package check
 
 import (
 	"io"
@@ -13,9 +13,9 @@ import (
 	"strings"
 )
 
-type vimChecker struct{}
+type VimChecker struct{}
 
-func (c *vimChecker) check() (bool, bool) {
+func (c *VimChecker) Check() (bool, bool) {
 	_, err := exec.LookPath("vim")
 	if err != nil {
 		return false, true // if no vim is installed, skip.
@@ -35,11 +35,11 @@ func (c *vimChecker) check() (bool, bool) {
 	return ok, false
 }
 
-func (c *vimChecker) summary() string {
+func (c *VimChecker) Summary() string {
 	return "Vim Go plugin"
 }
 
-func (c *vimChecker) resolution() string {
+func (c *VimChecker) Resolution() string {
 	return `Vim is installed but the Go plugin is not available.
 See https://github.com/fatih/vim-go to install.`
 }

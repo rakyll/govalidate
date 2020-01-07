@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package check
 
 import (
 	"bufio"
 	"os/exec"
 )
 
-type vscodeChecker struct{}
+type VSCodeChecker struct{}
 
-func (c *vscodeChecker) check() (bool, bool) {
+func (c *VSCodeChecker) Check() (bool, bool) {
 	_, err := exec.LookPath("code")
 	if err != nil {
 		return false, true // if no VSCode is installed, skip.
@@ -41,11 +41,11 @@ func (c *vscodeChecker) check() (bool, bool) {
 	}
 }
 
-func (c *vscodeChecker) summary() string {
+func (c *VSCodeChecker) Summary() string {
 	return "VSCode Go extension"
 }
 
-func (c *vscodeChecker) resolution() string {
+func (c *VSCodeChecker) Resolution() string {
 	return `VSCode Go extension is not installed.
 See https://code.visualstudio.com/docs/languages/go to install.`
 }

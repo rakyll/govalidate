@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package check
 
 import (
 	"fmt"
@@ -16,12 +16,12 @@ var supportedGoVersions = []string{ // TODO(jbd): Get the list from golang.org
 	"go1.14beta1",
 }
 
-type goChecker struct {
+type GoChecker struct {
 	version string
 	err     error
 }
 
-func (g *goChecker) check() (bool, bool) {
+func (g *GoChecker) Check() (bool, bool) {
 	_, err := exec.LookPath("go")
 	if err != nil {
 		g.err = err
@@ -43,14 +43,14 @@ func (g *goChecker) check() (bool, bool) {
 	return false, false
 }
 
-func (g *goChecker) summary() string {
+func (g *GoChecker) Summary() string {
 	if g.version == "" {
 		return "Go installation"
 	}
 	return fmt.Sprintf("Go (%v)", g.version)
 }
 
-func (g *goChecker) resolution() string {
+func (g *GoChecker) Resolution() string {
 	if g.err != nil {
 		return fmt.Sprintf(`Is Go installed? %v.
 Visit https://golang.org/dl/ to download Go.`, g.err)

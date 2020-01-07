@@ -2,16 +2,16 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package main
+package check
 
 import (
 	"fmt"
 	"strings"
 )
 
-type cgoChecker struct{}
+type CGOChecker struct{}
 
-func (c *cgoChecker) check() (bool, bool) {
+func (c *CGOChecker) Check() (bool, bool) {
 	// Run gcc and check the output instead of looking
 	// in the path. On darwin, if gcc is installed but
 	// license is not agreed, it shows up a different
@@ -20,11 +20,11 @@ func (c *cgoChecker) check() (bool, bool) {
 	return strings.Contains(gccStr, "no input files"), false
 }
 
-func (c *cgoChecker) summary() string {
+func (c *CGOChecker) Summary() string {
 	return "Checking gcc for CGO support"
 }
 
-func (c *cgoChecker) resolution() string {
+func (c *CGOChecker) Resolution() string {
 	return fmt.Sprintf(`If you are going to use CGO, install a C compiler.
 - On macOS, install XCode and run "xcode-select --install" to install command line tools.
   Then, you may need to accept the license by running "xcodebuild -license".
