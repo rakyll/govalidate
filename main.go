@@ -53,7 +53,7 @@ func main() {
 		optionals = append(optionals, &cgoChecker{})
 	}
 	if !ignoreEditors {
-		// TODO(jbd): Add Gogland.
+		// TODO(jbd): Add Goland.
 		optionals = append(optionals, &vimChecker{}, &vscodeChecker{})
 	}
 	for _, c := range optionals {
