@@ -7,7 +7,7 @@ Validates your Go installation and dependencies.
 * Checks the Go installation and version.
 * Checks if the PATH is correctly configured.
 * Checks CGO dependencies are installed.
-* Checks the editor configuration.
+* Checks the plugin support for available editors.
 
 ```
 $ govalidate
