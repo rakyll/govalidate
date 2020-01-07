@@ -56,8 +56,8 @@ func (g *GoChecker) Resolution() string {
 Visit https://golang.org/dl/ to download Go.`, g.err)
 	}
 
-	return fmt.Sprintf(`Your current Go version (%v) is not supported.
-Supported versions are %v.
-Visit https://golang.org/dl/ for a supported version.`,
+	return fmt.Sprintf(`Your current Go version (%v) is old.
+Current Go versions are %v.
+Visit https://golang.org/dl/ for a new version.`,
 		g.version, strings.Join(supportedGoVersions, ", "))
 }
