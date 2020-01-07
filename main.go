@@ -83,7 +83,7 @@ func runCheck(optional bool, c checker) int {
 	} else {
 		if !optional {
 			exit = 1
-			color.New(color.FgRed).Print("[x]")
+			color.New(color.FgRed).Print("[✗]")
 		} else {
 			color.New(color.FgYellow).Print("[!]")
 		}
