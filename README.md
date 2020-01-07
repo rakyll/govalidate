@@ -1,4 +1,4 @@
-# govalidate ✅
+# govalidate
 
 [![CircleCI](https://circleci.com/gh/rakyll/govalidate.svg?style=svg&circle-token=8ea1ac2ae17cbac9a5505d875261eb74061f8404)](https://circleci.com/gh/rakyll/govalidate)
 
