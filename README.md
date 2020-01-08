@@ -10,6 +10,7 @@ Validates your Go installation and dependencies.
 * Checks the plugin support for available editors.
 
 ```
+$ govalidate
 [✔] Go (go1.13.5)
 [✗] Checking if $PATH contains "/Users/jbd/go/bin"
     Add "/Users/jbd/go/bin" to your $PATH.
