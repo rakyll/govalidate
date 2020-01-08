@@ -21,8 +21,20 @@ func (c *VimChecker) Check() (bool, bool) {
 		return false, true // if no vim is installed, skip.
 	}
 	var ok bool
-	homeDir := guessHomeDir()
-	filepath.Walk(filepath.Join(homeDir, ".vim"), func(path string, info os.FileInfo, err error) error {
+	vimDir := filepath.Join(guessHomeDir(), ".vim")
+	fi, err := os.Lstat(vimDir)
+	if err != nil {
+		return false, false
+	}
+	if fi.Mode()&os.ModeSymlink != 0 {
+		resolved, err := os.Readlink(vimDir)
+		if err != nil {
+			return false, false
+		}
+		vimDir = resolved
+	}
+
+	filepath.Walk(vimDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
