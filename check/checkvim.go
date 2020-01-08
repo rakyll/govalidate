@@ -5,6 +5,7 @@
 package check
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -13,7 +14,9 @@ import (
 	"strings"
 )
 
-type VimChecker struct{}
+type VimChecker struct {
+	err error
+}
 
 func (c *VimChecker) Check() (bool, bool) {
 	_, err := exec.LookPath("vim")
@@ -24,11 +27,13 @@ func (c *VimChecker) Check() (bool, bool) {
 	vimDir := filepath.Join(guessHomeDir(), ".vim")
 	fi, err := os.Lstat(vimDir)
 	if err != nil {
+		c.err = err
 		return false, false
 	}
 	if fi.Mode()&os.ModeSymlink != 0 {
 		resolved, err := os.Readlink(vimDir)
 		if err != nil {
+			c.err = err
 			return false, false
 		}
 		vimDir = resolved
@@ -52,8 +57,12 @@ func (c *VimChecker) Summary() string {
 }
 
 func (c *VimChecker) Resolution() string {
-	return `Vim is installed but the Go plugin is not available.
-See https://github.com/fatih/vim-go to install.`
+	var msg string
+	msg = "Vim is installed but cannot determine the Go plugin status.\n"
+	if c.err != nil {
+		msg += fmt.Sprintf("Error: %v\n", c.err)
+	}
+	return msg + "See https://github.com/fatih/vim-go to install."
 }
 
 func guessHomeDir() string {
