@@ -6,4 +6,4 @@ release:
 	GOOS=darwin GOARCH=amd64 go build -o ./bin/$(binary)_darwin_amd64
 
 push:
-	gsutil cp bin/* gs://jbd-releases
+	gsutil -m cp -r bin gs://jbd-releases
