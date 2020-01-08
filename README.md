@@ -9,7 +9,18 @@ Validates your Go installation and dependencies.
 * Checks CGO dependencies are installed.
 * Checks the plugin support for available editors.
 
-![govalidate](https://i.imgur.com/kR7YXqY.jpg)
+```
+[✔] Go (go1.13.5)
+[✗] Checking if $PATH contains "/Users/jbd/go/bin"
+    Add "/Users/jbd/go/bin" to your $PATH.
+    On Unix systems:
+    export PATH=$PATH:/Users/jbd/go/bin
+[✔] Checking gcc for CGO support
+[✔] Vim Go plugin
+[!] VSCode Go extension
+    VSCode Go extension is not installed.
+    See https://code.visualstudio.com/docs/languages/go to install.
+```
 
 ## Installation
 
