@@ -6,4 +6,16 @@
 
 package check
 
+import "runtime"
+
 const pathSeperator = ";"
+
+const windowsOS = "windows"
+
+func isWindows() bool {
+	if runtime.GOOS == windowsOS {
+		return true
+	}
+
+	return false
+}

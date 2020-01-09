@@ -7,7 +7,10 @@ package check
 import (
 	"bufio"
 	"os/exec"
+	"strings"
 )
+
+const GoExtensionName = "ms-vscode.go"
 
 type VSCodeChecker struct{}
 
@@ -17,28 +20,15 @@ func (c *VSCodeChecker) Check() (bool, bool) {
 		return false, true // if no VSCode is installed, skip.
 	}
 
-	cmd := exec.Command("code", "--list-extensions")
-	out, err := cmd.StdoutPipe()
-	if err != nil {
-		return false, false
-	}
-	defer out.Close()
-	if err := cmd.Start(); err != nil {
-		return false, false
-	}
-
-	// Return as soon as the extension name appears in the output.
-	// Otherwise, command hangs for a while before it finally exists.
-	reader := bufio.NewReader(out)
-	for {
-		line, err := reader.ReadString('\n')
-		if err != nil {
-			return false, false
-		}
-		if line == "ms-vscode.Go\n" {
-			return true, false
+	ok := isInstalledIn("code", "--list-extensions")
+	if !ok {
+		// Validate if it is running on a Windows OS.
+		// To validate WSL environment.
+		if isWindows() {
+			return isInstalledIn("wsl", "ls", "~/.vscode-server/extensions"), false
 		}
 	}
+	return true, false
 }
 
 func (c *VSCodeChecker) Summary() string {
@@ -48,4 +38,28 @@ func (c *VSCodeChecker) Summary() string {
 func (c *VSCodeChecker) Resolution() string {
 	return `VSCode Go extension is not installed.
 See https://code.visualstudio.com/docs/languages/go to install.`
+}
+
+func isInstalledIn(command string, arg ...string) bool {
+	cmd := exec.Command(command, arg...)
+	out, err := cmd.StdoutPipe()
+	if err != nil {
+		return false
+	}
+	defer out.Close()
+	if err := cmd.Start(); err != nil {
+		return false
+	}
+
+	reader := bufio.NewReader(out)
+	for {
+		line, err := reader.ReadString('\n')
+		if err != nil {
+			return false
+		}
+		contains := strings.Contains(strings.ToLower(line), GoExtensionName)
+		if contains {
+			return true
+		}
+	}
 }
