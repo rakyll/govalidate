@@ -28,22 +28,18 @@ type checker interface {
 var (
 	ignoreCGO     bool
 	ignoreEditors bool
-	showHelpText  bool
 )
 
 func main() {
+	flag.Usage = printHelp
 	flag.BoolVar(&ignoreCGO, "ignore-cgo", false, "")
 	flag.BoolVar(&ignoreEditors, "ignore-editors", false, "")
-	flag.BoolVar(&showHelpText, "help", false, "")
 	flag.Parse()
 
 	var exit int
 	// TODO(jbd): Check operating system requirements.
 	// See https://github.com/golang/go/wiki/MinimumRequirements for
 	// a more comprehensive list.
-	if showHelpText {
-		runHelpText()
-	}
 	checks := []checker{
 		&check.GoChecker{},   // checks go and go version
 		&check.PathChecker{}, // checks $GOPATH/bin is in $PATH
