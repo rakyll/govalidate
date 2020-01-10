@@ -24,7 +24,7 @@ func (c *PathChecker) Check() (bool, bool) {
 	}
 
 	c.gopathbin = filepath.Clean(filepath.Join(gopath, "bin"))
-	paths := strings.Split(os.Getenv("PATH"), pathSeperator)
+	paths := strings.Split(os.Getenv("PATH"), string(os.PathListSeparator))
 	for _, p := range paths {
 		if filepath.Clean(p) == c.gopathbin {
 			return true, false
