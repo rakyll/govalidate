@@ -97,7 +97,7 @@ func runCheck(optional bool, c checker) int {
 	return exit
 }
 
-func runHelpText() {
+func printHelp() {
 	fmt.Print(`govalidate
 Validates your Go installation and dependencies.
 
