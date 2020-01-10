@@ -13,9 +13,5 @@ const pathSeperator = ";"
 const windowsOS = "windows"
 
 func isWindows() bool {
-	if runtime.GOOS == windowsOS {
-		return true
-	}
-
-	return false
+	return runtime.GOOS == windowsOS
 }

@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const GoExtensionName = "ms-vscode.go"
+const goExtensionName = "ms-vscode.go"
 
 type VSCodeChecker struct{}
 
