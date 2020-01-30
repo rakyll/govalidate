@@ -11,8 +11,8 @@ import (
 )
 
 var supportedGoVersions = []string{ // TODO(jbd): Get the list from golang.org
-	"go1.12.15",
-	"go1.13.6",
+	"go1.12.16",
+	"go1.13.7",
 	"go1.14beta1",
 }
 
