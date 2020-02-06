@@ -13,7 +13,7 @@ import (
 var supportedGoVersions = []string{ // TODO(jbd): Get the list from golang.org
 	"go1.12.16",
 	"go1.13.7",
-	"go1.14beta1",
+	"go1.14rc1",
 }
 
 type GoChecker struct {
