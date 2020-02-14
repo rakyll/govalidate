@@ -94,16 +94,17 @@ func runCheck(optional bool, c checker) int {
 }
 
 func printHelp() {
-	fmt.Print(`govalidate
+	fmt.Print(`govalidate:
 Validates your Go installation and dependencies.
 
 Usage:
-	govalidate [option]
+  govalidate [option]
 
 Options:
-	-ignore-cgo             Ignore CGO support. 
-	-ignore-editors         Ignore plugin support for avaible editors.
-	-help                   Display this usage guide.`)
+  -ignore-cgo       Ignore checking CGO support. 
+  -ignore-editors   Ignore checking editor plugin support.
+  -help             Display this user guide.
+`)
 	os.Exit(1)
 }
 
