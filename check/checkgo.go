@@ -5,20 +5,20 @@
 package check
 
 import (
+	"encoding/json"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"os/exec"
 	"strings"
 )
 
-const versionsURL = "https://raw.githubusercontent.com/rakyll/govalidate/master/goversion.txt"
+const downloadsURL = "https://golang.org/dl/?mode=json"
 
 type GoChecker struct {
-	version             string
-	supportedGoVersions []string
-	err                 error
+	version             string   // available after Check is run.
+	supportedGoVersions []string // available after Check is run.
+	err                 error    // available after Check is run.
 }
 
 func (g *GoChecker) Check() (bool, bool) {
@@ -33,14 +33,7 @@ func (g *GoChecker) Check() (bool, bool) {
 		return false, false
 	}
 
-	req, err := http.Get(versionsURL)
-	if err != nil {
-		g.err = err
-		return false, false
-	}
-	defer req.Body.Close()
-
-	versions, err := readGoVersions(req.Body)
+	versions, err := readGoVersions()
 	if err != nil {
 		g.err = err
 		return false, false
@@ -76,12 +69,30 @@ Visit https://golang.org/dl/ for a new version.`,
 		g.version, strings.Join(g.supportedGoVersions, ", "))
 }
 
-func readGoVersions(r io.Reader) ([]string, error) {
-	body, err := ioutil.ReadAll(r)
+func readGoVersions() ([]string, error) {
+	req, err := http.Get(downloadsURL)
 	if err != nil {
 		return nil, err
 	}
-	bodyStr := string(body)
-	versions := strings.Split(bodyStr, "\n")
+	defer req.Body.Close()
+
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var versionsJSON []versionJSON
+	if err := json.Unmarshal(body, &versionsJSON); err != nil {
+		return nil, err
+	}
+
+	var versions = make([]string, len(versionsJSON))
+	for i, vJSON := range versionsJSON {
+		versions[i] = vJSON.Version
+	}
 	return versions, nil
+}
+
+type versionJSON struct {
+	Version string `json:"version,omitempty"`
 }
