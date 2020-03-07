@@ -26,14 +26,16 @@ type checker interface {
 }
 
 var (
-	ignoreCGO     bool
-	ignoreEditors bool
+	ignoreCGO       bool
+	ignoreEditors   bool
+	ignorePathCheck bool
 )
 
 func main() {
 	flag.Usage = printHelp
 	flag.BoolVar(&ignoreCGO, "ignore-cgo", false, "")
 	flag.BoolVar(&ignoreEditors, "ignore-editors", false, "")
+	flag.BoolVar(&ignorePathCheck, "ignore-path", false, "")
 	flag.Parse()
 
 	var exit int
@@ -41,8 +43,11 @@ func main() {
 	// See https://github.com/golang/go/wiki/MinimumRequirements for
 	// a more comprehensive list.
 	checks := []checker{
-		&check.GoChecker{},   // checks go and go version
-		&check.PathChecker{}, // checks $GOPATH/bin is in $PATH
+		&check.GoChecker{}, // checks go and go version
+	}
+	// Skip path check.
+	if ignorePathCheck == false {
+		checks = append(checks, &check.PathChecker{}) // checks $GOPATH/bin is in $PATH
 	}
 	for _, c := range checks {
 		exit += runCheck(false, c)
