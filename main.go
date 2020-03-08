@@ -108,6 +108,7 @@ Usage:
 Options:
   -ignore-cgo       Ignore checking CGO support. 
   -ignore-editors   Ignore checking editor plugin support.
+  -ignore-path      Ignore checking path.
   -help             Display this user guide.
 `)
 	os.Exit(1)
