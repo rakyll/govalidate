@@ -46,7 +46,7 @@ func main() {
 		&check.GoChecker{}, // checks go and go version
 	}
 	// Skip path check.
-	if ignorePathCheck == false {
+	if !ignorePathCheck {
 		checks = append(checks, &check.PathChecker{}) // checks $GOPATH/bin is in $PATH
 	}
 	for _, c := range checks {
