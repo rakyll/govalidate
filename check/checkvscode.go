@@ -35,7 +35,7 @@ func (c *VSCodeChecker) Check() (bool, bool) {
 		if err != nil {
 			return false, false
 		}
-		if line == "ms-vscode.Go\n" {
+		if line == "golang.Go\n" {
 			return true, false
 		}
 	}
