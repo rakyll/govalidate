@@ -26,7 +26,7 @@ $ govalidate
 ## Installation
 
 ```
-$ go get -u github.com/rakyll/govalidate
+$ go install github.com/rakyll/govalidate@latest
 ```
 
 Or download one of the binaries and run:
